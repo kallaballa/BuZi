@@ -169,7 +169,8 @@ function doPackageConf() {
 }
 
 function doCopy() {
- true
+  check "Copy setup" \
+    "cd $BOOTSTRAP_DIR/; cp -a setup/* $CHROOT_DIR/"
 }
 
 function doCleanupPackages() {
