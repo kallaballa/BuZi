@@ -1,15 +1,10 @@
 keyboard-configuration
 sudo
-dialog
 alsa-utils
 psmisc
 dropbear
 xinit
 mingetty
-xserver-xorg
-xserver-xorg-input-kbd
-xserver-xorg-input-mouse
-x11-xserver-utils
 kbd
 v86d
 wireless-tools

@@ -11,7 +11,6 @@ function getConf() {
 }
 
 KERNEL="`getConf config/kernel`"
-VIDEO_DRIVERS="`getConf config/video_drivers`"
 KEYRINGS="`getConf config/keyrings`"
 PKG_WHITE="`getConf config/packages_white`"
 PKG_EXTRA="`getConf config/packages_extra`"
@@ -68,45 +67,6 @@ function absPath() {
   base="`basename $1`"
   absdir="`cd $dir; pwd`"
   echo $absdir/$base
-}
-
-function printVideoDrivers() {
-  PAD=18
-  i=0
-
-  echo $VIDEO_DRIVERS | sed 's/ /\n/g' | cut -d"-" -f4| while read vd; do
-    LEN=$[ ${#i} + ${#vd} + 2 ]
-    echo -n "($i) $vd"
-  
-    for j in `seq 0 $[$PAD - $LEN]`; do echo -n " "; done
-    i=$[$i + 1]
-    if [ $[ $i % 3 ] -eq 0 ]; then
-      echo
-    fi
-  done  
-  echo
-}
-
-function askVideoDriver() {
-  NUM="`echo $VIDEO_DRIVERS | wc -w`"
-  echo -n "Please select a video driver (default=0):" 1>&2
-  DRIVER=""
-  while read idx; do
-    [ -z "$idx" ] && idx=0
-    if printf "%d" $idx > /dev/null 2>&1; then
-      if [ $idx -lt 0 -o $idx -ge $NUM ]; then
-	echo "Out of range: $idx." 1>&2
-      else
-	DRIVER="`echo $VIDEO_DRIVERS | sed 's/ /\n/g' | sed -n "$[ $idx + 1 ]p"`"
-	echo "Selected: $DRIVER" 1>&2
-	break
-      fi
-    else
-      echo "Invalid input: $idx. Please select the video driver by entering a number." 1>&2
-    fi
-    echo -n "Please select a video driver (default=0):" 1>&2
-  done
-  echo $DRIVER
 }
 
 function skip() {
@@ -303,14 +263,6 @@ else
 
   doCheckPreCond
 
-  printVideoDrivers
-  
-  if [ -z "$GIDX" ]; then
-    PKG_WHITE="$PKG_WHITE $(askVideoDriver)"
-  else
-    DRIVER="`echo $VIDEO_DRIVERS | sed 's/ /\n/g' | sed -n "$[ $GIDX + 1 ]p"`"
-    PKG_WHITE="$PKG_WHITE $DRIVER"
-  fi
   [ -n "$INSTALL_EXTRA" ] && PKG_WHITE="$PKG_WHITE $PKG_EXTRA" 
 
   if [ -z "$NODEBOOT" ]; then 
