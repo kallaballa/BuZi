@@ -1,0 +1,16 @@
+#!/bin/bash
+
+cat <<EOFPIN
+
+Package: *
+Pin: release n=wheezy,l=Unofficial Multimedia Packages
+Pin-Priority: 988
+
+Package: *
+Pin: release n=wheezy,l=Debian
+Pin-Priority: 985 
+
+Package: *
+Pin: release n=sid,l=Debian
+Pin-Priority: 984
+EOFPIN
