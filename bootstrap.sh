@@ -15,7 +15,6 @@ KEYRINGS="`getConf config/keyrings`"
 PKG_WHITE="`getConf config/packages_white`"
 PKG_EXTRA="`getConf config/packages_extra`"
 PKG_BLACK="`getConf config/packages_black`" 
-PKG_SID="`getConf config/packages_sid`"
 FILES_BLACK="`getConf config/files_black`"
 
 export LC_ALL="C"
@@ -23,7 +22,6 @@ export LC_ALL="C"
 APTNI="apt-get -q -y --no-install-recommends --force-yes -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" ";
 
 DEBIAN_MIRROR="http://ftp.at.debian.org/debian/"
-DEBIAN_MULTIMEDIA_MIRROR="http://www.deb-multimedia.org/"
 
 dir="`dirname $0`"
 BOOTSTRAP_DIR="`cd $dir; pwd`"
@@ -115,9 +113,6 @@ function doPackageConf() {
   check "Install white packages" \
     "$CHRT $APTNI install $PKG_WHITE"
 
-  check "Install sid packages" \
-     "$CHRT $APTNI -t sid install $PKG_SID"
-
   check "Install kernel" \
     "$CHRT $APTNI -t wheezy install $KERNEL"
 
@@ -166,7 +161,7 @@ function doPrepareChroot() {
     "\"$BOOTSTRAP_DIR/templates/apt_preferences\" > \"$CHROOT_DIR/etc/apt/preferences.d/prefere_em_squeeze\""
 
   check "Make apt sources list" \
-    "\"$BOOTSTRAP_DIR/templates/sources_list\" \"$DEBIAN_MIRROR\" \"$DEBIAN_MULTIMEDIA_MIRROR\" > \"$CHROOT_DIR/etc/apt/sources.list\""
+    "\"$BOOTSTRAP_DIR/templates/sources_list\" \"$DEBIAN_MIRROR\" > \"$CHROOT_DIR/etc/apt/sources.list\""
 
   if [ -n "$APTCACHER_PORT" ]; then
     # use apt-cacher-ng to cache packages during install
