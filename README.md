@@ -1,5 +1,4 @@
 # BuZi is a debian system builder. 
 
-It tries to be cross platform friendly and aid in minimizing system size.
-
-Please see the LICENSE file.
+It uses debootstrap and lets you create your own profile of packages. 
+It also includes tools to create bootable media or vm images.
